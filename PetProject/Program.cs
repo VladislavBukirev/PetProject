@@ -1,4 +1,7 @@
-﻿using Telegram.Bot;
+﻿using System.Net.Mime;
+using Telegram.Bot;
+using Telegram.Bot.Requests;
+using Telegram.Bot.Types;
 using Telegram.Bot.Types.ReplyMarkups;
 
 namespace TelegramBotExperiments
@@ -19,7 +22,11 @@ namespace TelegramBotExperiments
         {
             private string token;
             private TelegramBotClient bot;
-
+            const string FirstButton = "FirstButton";
+            const string SecondButton = "SecondButton";
+            const string ThirdButton = "ThirdButton";
+            const string FourthButton = "FourthButton";
+            
             public TelegramBotHelper(string token)
             {
                 this.token = token;
@@ -60,7 +67,25 @@ namespace TelegramBotExperiments
                     case Telegram.Bot.Types.Enums.UpdateType.Message:
                     {
                         var text = update.Message.Text;
-                        bot.SendTextMessageAsync(update.Message.Chat.Id, "Recieved text: " + text, replyMarkup: GetButtons());
+                        switch (text)
+                        {
+                            case FirstButton:
+                                bot.SendTextMessageAsync(update.Message.Chat.Id, "Первая кнопка", replyMarkup: GetButtons());
+                                break;
+                                break;
+                            case SecondButton:
+                                bot.SendTextMessageAsync(update.Message.Chat.Id, "Вторая кнопка", replyMarkup: GetButtons());
+                                break;
+                            case ThirdButton:
+                                bot.SendTextMessageAsync(update.Message.Chat.Id, "Третья кнопка", replyMarkup: GetButtons());
+                                break;
+                            case FourthButton:
+                                bot.SendTextMessageAsync(update.Message.Chat.Id, "Четвёртая кнопка", replyMarkup: GetButtons());
+                                break;
+                            default:
+                                bot.SendTextMessageAsync(update.Message.Chat.Id, "Recieved text: " + text, replyMarkup: GetButtons());
+                                break;
+                        }
                         break;
                     }
                     default:
@@ -77,13 +102,13 @@ namespace TelegramBotExperiments
                     {
                         new List<KeyboardButton> //Первая строка кнопок
                         {
-                            new KeyboardButton("FirstButton"),
-                            new KeyboardButton("SecondButton")
+                            new KeyboardButton(FirstButton),
+                            new KeyboardButton(SecondButton)
                         },
                         new List<KeyboardButton> //Вторая строка кнопок
                         {
-                            new KeyboardButton("ThirdButton"),
-                            new KeyboardButton("FourthButton")
+                            new KeyboardButton(ThirdButton),
+                            new KeyboardButton(FourthButton)
                         }
                     }
                 };
