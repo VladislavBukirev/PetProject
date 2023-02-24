@@ -1,0 +1,76 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Users\\79521\\Desktop\\git-actually\\helloapp-black\\PetProject\\PetProject\\PetProject.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\79521\\Desktop\\git-actually\\helloapp-black\\PetProject\\PetProject\\PetProject.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\79521\\Desktop\\git-actually\\helloapp-black\\PetProject\\PetProject\\PetProject.csproj",
+        "projectName": "PetProject",
+        "projectPath": "C:\\Users\\79521\\Desktop\\git-actually\\helloapp-black\\PetProject\\PetProject\\PetProject.csproj",
+        "packagesPath": "C:\\Users\\79521\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\79521\\Desktop\\git-actually\\helloapp-black\\PetProject\\PetProject\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\79521\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "dependencies": {
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.2, )"
+            },
+            "Telegram.Bot": {
+              "target": "Package",
+              "version": "[18.0.0, )"
+            },
+            "Telegram.Bots.Extensions.Polling": {
+              "target": "Package",
+              "version": "[5.9.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.302\\RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
