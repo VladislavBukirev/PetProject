@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "oWRHbhINWE+I9OeSsEBYARMk163YqQcgnr2uKISLf/YLpOFGSazkIUjTYF5rvSM+S17hY6ObyREELlfTvCyang==",
+  "dgSpecHash": "Jxmagv37E7GPPaoAp0/sMgOojpsjI5TQp8fGj6swDySOQBJPxYM5kpM/7qUe1ziE+UOkmxLPP9YRRPqE/vEsBw==",
   "success": true,
   "projectFilePath": "C:\\Users\\79521\\Desktop\\git-actually\\helloapp-black\\PetProject\\PetProject\\PetProject.csproj",
   "expectedPackageFiles": [
@@ -39,9 +39,12 @@
     "C:\\Users\\79521\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\6.0.0\\system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512",
     "C:\\Users\\79521\\.nuget\\packages\\system.text.encodings.web\\6.0.0\\system.text.encodings.web.6.0.0.nupkg.sha512",
     "C:\\Users\\79521\\.nuget\\packages\\system.text.json\\6.0.0\\system.text.json.6.0.0.nupkg.sha512",
+    "C:\\Users\\79521\\.nuget\\packages\\system.threading.channels\\6.0.0\\system.threading.channels.6.0.0.nupkg.sha512",
     "C:\\Users\\79521\\.nuget\\packages\\telegram.bot\\18.0.0\\telegram.bot.18.0.0.nupkg.sha512",
+    "C:\\Users\\79521\\.nuget\\packages\\telegram.bot.extensions.polling\\1.0.2\\telegram.bot.extensions.polling.1.0.2.nupkg.sha512",
     "C:\\Users\\79521\\.nuget\\packages\\telegram.bots\\5.9.0\\telegram.bots.5.9.0.nupkg.sha512",
-    "C:\\Users\\79521\\.nuget\\packages\\telegram.bots.extensions.polling\\5.9.0\\telegram.bots.extensions.polling.5.9.0.nupkg.sha512"
+    "C:\\Users\\79521\\.nuget\\packages\\telegram.bots.extensions.polling\\5.9.0\\telegram.bots.extensions.polling.5.9.0.nupkg.sha512",
+    "C:\\Users\\79521\\.nuget\\packages\\telegrambotmenu\\0.0.2\\telegrambotmenu.0.0.2.nupkg.sha512"
   ],
   "logs": []
 }

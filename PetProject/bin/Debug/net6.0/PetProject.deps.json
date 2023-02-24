@@ -10,7 +10,8 @@
         "dependencies": {
           "Newtonsoft.Json": "13.0.2",
           "Telegram.Bot": "18.0.0",
-          "Telegram.Bots.Extensions.Polling": "5.9.0"
+          "Telegram.Bots.Extensions.Polling": "5.9.0",
+          "TelegramBotMenu": "0.0.2"
         },
         "runtime": {
           "PetProject.dll": {}
@@ -447,6 +448,7 @@
           "System.Text.Encodings.Web": "6.0.0"
         }
       },
+      "System.Threading.Channels/6.0.0": {},
       "Telegram.Bot/18.0.0": {
         "dependencies": {
           "Newtonsoft.Json": "13.0.2"
@@ -455,6 +457,18 @@
           "lib/netcoreapp3.1/Telegram.Bot.dll": {
             "assemblyVersion": "18.0.0.0",
             "fileVersion": "18.0.0.0"
+          }
+        }
+      },
+      "Telegram.Bot.Extensions.Polling/1.0.2": {
+        "dependencies": {
+          "System.Threading.Channels": "6.0.0",
+          "Telegram.Bot": "18.0.0"
+        },
+        "runtime": {
+          "lib/netcoreapp3.1/Telegram.Bot.Extensions.Polling.dll": {
+            "assemblyVersion": "1.0.2.0",
+            "fileVersion": "1.0.2.0"
           }
         }
       },
@@ -478,6 +492,18 @@
         },
         "runtime": {
           "lib/net6.0/Telegram.Bots.Extensions.Polling.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "TelegramBotMenu/0.0.2": {
+        "dependencies": {
+          "Telegram.Bot": "18.0.0",
+          "Telegram.Bot.Extensions.Polling": "1.0.2"
+        },
+        "runtime": {
+          "lib/net6.0/TelegramBotMenu.dll": {
             "assemblyVersion": "1.0.0.0",
             "fileVersion": "1.0.0.0"
           }
@@ -736,12 +762,26 @@
       "path": "system.text.json/6.0.0",
       "hashPath": "system.text.json.6.0.0.nupkg.sha512"
     },
+    "System.Threading.Channels/6.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-TY8/9+tI0mNaUMgntOxxaq2ndTkdXqLSxvPmas7XEqOlv9lQtB7wLjYGd756lOaO7Dvb5r/WXhluM+0Xe87v5Q==",
+      "path": "system.threading.channels/6.0.0",
+      "hashPath": "system.threading.channels.6.0.0.nupkg.sha512"
+    },
     "Telegram.Bot/18.0.0": {
       "type": "package",
       "serviceable": true,
       "sha512": "sha512-BD0UchUXINymCGS+1O1tv2enCRyv+VbSJQAgfnueTZs3j7K4XXyJyW0CgyJleTrqB1oq1hS1ux6gBpi3Ajp+ZQ==",
       "path": "telegram.bot/18.0.0",
       "hashPath": "telegram.bot.18.0.0.nupkg.sha512"
+    },
+    "Telegram.Bot.Extensions.Polling/1.0.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-WWldKCidTlr7Nu2JhyriU9ApB/zyCKCezKoru7P9GRyjVacciLcgYihHI0fU62CUPhqyWlP7EqV8YJ4zAIWFmQ==",
+      "path": "telegram.bot.extensions.polling/1.0.2",
+      "hashPath": "telegram.bot.extensions.polling.1.0.2.nupkg.sha512"
     },
     "Telegram.Bots/5.9.0": {
       "type": "package",
@@ -756,6 +796,13 @@
       "sha512": "sha512-zzGB7i4lY4WV2WqumyWTEN3lWFtReBvYt1tUXxRs9FyyAMDMfxX2MyC8SggoH6xzqiWmp5eflTHbI7BsYWcxHQ==",
       "path": "telegram.bots.extensions.polling/5.9.0",
       "hashPath": "telegram.bots.extensions.polling.5.9.0.nupkg.sha512"
+    },
+    "TelegramBotMenu/0.0.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-ckEbCFFaZiQst6jRclK/3NmF/jcMg15inf8ae7X0e85MJ7uQkaANaEiZDe5Pa236CgHF+w/Lu8Hms8CnHj/PlA==",
+      "path": "telegrambotmenu/0.0.2",
+      "hashPath": "telegrambotmenu.0.0.2.nupkg.sha512"
     }
   }
 }

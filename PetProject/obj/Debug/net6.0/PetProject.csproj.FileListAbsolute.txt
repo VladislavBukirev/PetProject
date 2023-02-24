@@ -50,3 +50,5 @@ C:\Users\79521\Desktop\git-actually\helloapp-black\PetProject\PetProject\obj\Deb
 C:\Users\79521\Desktop\git-actually\helloapp-black\PetProject\PetProject\obj\Debug\net6.0\PetProject.pdb
 C:\Users\79521\Desktop\git-actually\helloapp-black\PetProject\PetProject\obj\Debug\net6.0\PetProject.genruntimeconfig.cache
 C:\Users\79521\Desktop\git-actually\helloapp-black\PetProject\PetProject\obj\Debug\net6.0\ref\PetProject.dll
+C:\Users\79521\Desktop\git-actually\helloapp-black\PetProject\PetProject\bin\Debug\net6.0\Telegram.Bot.Extensions.Polling.dll
+C:\Users\79521\Desktop\git-actually\helloapp-black\PetProject\PetProject\bin\Debug\net6.0\TelegramBotMenu.dll

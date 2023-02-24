@@ -1,13 +1,4 @@
 ﻿using Telegram.Bot;
-using System;
-using System.Diagnostics;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Xml.Xsl;
-using Telegram.Bot;
-using Telegram.Bot.Types;
-using Telegram.Bot.Exceptions;
-using Telegram.Bot.Polling;
 using Telegram.Bot.Types.ReplyMarkups;
 
 namespace TelegramBotExperiments
@@ -41,17 +32,17 @@ namespace TelegramBotExperiments
                 if (me != null && !string.IsNullOrEmpty(me.Username))
                 {
                     int offset = 0;
-                    while (true)
+                    while (true) 
                     {
                         try
                         {
-                            var updates = bot.GetUpdatesAsync(offset).Result;
+                            var updates = bot.GetUpdatesAsync(offset).Result; //Регистрируем изменение
                             if (updates != null && updates.Length > 0)
                             {
                                 foreach (var update in updates)
                                 {
-                                    ProcessUpdate(update);
-                                    offset = update.Id + 1;
+                                    ProcessUpdate(update); //Обновляем состояние бота
+                                    offset = update.Id + 1; //Изменяем offset изменения, чтобы оно не выполнялось вечно
                                 }
                             }
                         }
@@ -69,13 +60,33 @@ namespace TelegramBotExperiments
                     case Telegram.Bot.Types.Enums.UpdateType.Message:
                     {
                         var text = update.Message.Text;
-                        bot.SendTextMessageAsync(update.Message.Chat.Id, "Recieved text: " + text);
+                        bot.SendTextMessageAsync(update.Message.Chat.Id, "Recieved text: " + text, replyMarkup: GetButtons());
                         break;
                     }
                     default:
                         Console.WriteLine(update.Type + "Not Implemented");
                         break;
                 }
+            }
+
+            private IReplyMarkup GetButtons()
+            {
+                return new ReplyKeyboardMarkup(token) //Передаём в клавиатуру токен нашего бота
+                {
+                Keyboard = new List<IEnumerable<KeyboardButton>>
+                    {
+                        new List<KeyboardButton> //Первая строка кнопок
+                        {
+                            new KeyboardButton("FirstButton"),
+                            new KeyboardButton("SecondButton")
+                        },
+                        new List<KeyboardButton> //Вторая строка кнопок
+                        {
+                            new KeyboardButton("ThirdButton"),
+                            new KeyboardButton("FourthButton")
+                        }
+                    }
+                };
             }
         }
     }

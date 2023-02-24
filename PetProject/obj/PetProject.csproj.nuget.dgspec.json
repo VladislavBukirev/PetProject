@@ -51,6 +51,10 @@
             "Telegram.Bots.Extensions.Polling": {
               "target": "Package",
               "version": "[5.9.0, )"
+            },
+            "TelegramBotMenu": {
+              "target": "Package",
+              "version": "[0.0.2, )"
             }
           },
           "imports": [
