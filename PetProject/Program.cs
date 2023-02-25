@@ -1,8 +1,10 @@
 ﻿using System.Net.Mime;
+using System.IO;
 using Telegram.Bot;
 using Telegram.Bot.Requests;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.ReplyMarkups;
+using File = Telegram.Bot.Types.File;
 
 namespace TelegramBotExperiments
 {
@@ -22,7 +24,7 @@ namespace TelegramBotExperiments
         {
             private string token;
             private TelegramBotClient bot;
-            const string FirstButton = "FirstButton";
+            const string FirstButton = "Пошёл нахуй";
             const string SecondButton = "SecondButton";
             const string ThirdButton = "ThirdButton";
             const string FourthButton = "FourthButton";
@@ -67,11 +69,15 @@ namespace TelegramBotExperiments
                     case Telegram.Bot.Types.Enums.UpdateType.Message:
                     {
                         var text = update.Message.Text;
+                        string image = null;
                         switch (text)
                         {
                             case FirstButton:
-                                bot.SendTextMessageAsync(update.Message.Chat.Id, "Первая кнопка", replyMarkup: GetButtons());
-                                break;
+                                image = Path.Combine(Environment.CurrentDirectory, "file_122593456.png"); //достать картинку
+                                using (var stream = System.IO.File.OpenRead(image)) //открыть картинку
+                                {
+                                    var r = bot.SendPhotoAsync(update.Message.Chat.Id, new Telegram.Bot.Types.InputFiles.InputOnlineFile(stream), replyMarkup: GetButtons()).Result;
+                                }
                                 break;
                             case SecondButton:
                                 bot.SendTextMessageAsync(update.Message.Chat.Id, "Вторая кнопка", replyMarkup: GetButtons());
