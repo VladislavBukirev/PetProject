@@ -4,6 +4,7 @@ using Telegram.Bot;
 using Telegram.Bot.Requests;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.ReplyMarkups;
+using static TelegramBotExperiments.Images;
 using File = Telegram.Bot.Types.File;
 
 namespace TelegramBotExperiments
@@ -24,7 +25,7 @@ namespace TelegramBotExperiments
         {
             private string token;
             private TelegramBotClient bot;
-            const string FirstButton = "Пошёл нахуй";
+            const string FirstButton = "Хочу картинку";
             const string SecondButton = "SecondButton";
             const string ThirdButton = "ThirdButton";
             const string FourthButton = "FourthButton";
@@ -73,7 +74,8 @@ namespace TelegramBotExperiments
                         switch (text)
                         {
                             case FirstButton:
-                                image = Path.Combine(Environment.CurrentDirectory, "file_122593456.png"); //достать картинку
+                                var rng = new Random();
+                                image = Path.Combine(Environment.CurrentDirectory, Images.GetImage(rng.Next(3))); //достать картинку
                                 using (var stream = System.IO.File.OpenRead(image)) //открыть картинку
                                 {
                                     var r = bot.SendPhotoAsync(update.Message.Chat.Id, new Telegram.Bot.Types.InputFiles.InputOnlineFile(stream), replyMarkup: GetButtons()).Result;
