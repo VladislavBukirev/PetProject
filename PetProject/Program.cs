@@ -25,11 +25,9 @@ namespace TelegramBotExperiments
         {
             private string token;
             private TelegramBotClient bot;
-            const string FirstButton = "Хочу картинку";
-            const string SecondButton = "SecondButton";
-            const string ThirdButton = "ThirdButton";
-            const string FourthButton = "FourthButton";
-            
+            const string GetImgButton = "Хочу картинку";
+            const string AddHomeworkButton = "Добавить домашнее задание";
+
             public TelegramBotHelper(string token)
             {
                 this.token = token;
@@ -73,7 +71,7 @@ namespace TelegramBotExperiments
                         string image = null;
                         switch (text)
                         {
-                            case FirstButton:
+                            case GetImgButton:
                                 var rng = new Random();
                                 image = Path.Combine(Environment.CurrentDirectory, Images.GetImage(rng.Next(3))); //достать картинку
                                 using (var stream = System.IO.File.OpenRead(image)) //открыть картинку
@@ -81,14 +79,12 @@ namespace TelegramBotExperiments
                                     var r = bot.SendPhotoAsync(update.Message.Chat.Id, new Telegram.Bot.Types.InputFiles.InputOnlineFile(stream), replyMarkup: GetButtons()).Result;
                                 }
                                 break;
-                            case SecondButton:
-                                bot.SendTextMessageAsync(update.Message.Chat.Id, "Вторая кнопка", replyMarkup: GetButtons());
-                                break;
-                            case ThirdButton:
-                                bot.SendTextMessageAsync(update.Message.Chat.Id, "Третья кнопка", replyMarkup: GetButtons());
-                                break;
-                            case FourthButton:
-                                bot.SendTextMessageAsync(update.Message.Chat.Id, "Четвёртая кнопка", replyMarkup: GetButtons());
+                            case AddHomeworkButton:
+                                image = Path.Combine(Environment.CurrentDirectory, "101.png"); //достать картинку
+                                using (var stream = System.IO.File.OpenRead(image)) //открыть картинку
+                                {
+                                    var r = bot.SendPhotoAsync(update.Message.Chat.Id, new Telegram.Bot.Types.InputFiles.InputOnlineFile(stream), replyMarkup: GetInlineButtons("1")).Result;
+                                }
                                 break;
                             default:
                                 bot.SendTextMessageAsync(update.Message.Chat.Id, "Recieved text: " + text, replyMarkup: GetButtons());
@@ -96,29 +92,39 @@ namespace TelegramBotExperiments
                         }
                         break;
                     }
+                    case Telegram.Bot.Types.Enums.UpdateType.CallbackQuery:
+                        switch (update.CallbackQuery.Data)
+                        {
+                            case "1":
+                                var msg = bot.SendTextMessageAsync(update.CallbackQuery.Message.Chat.Id, "Загружай", replyMarkup: GetButtons()).Result;
+                                break;
+                        }
+                        break;
                     default:
                         Console.WriteLine(update.Type + "Not Implemented");
                         break;
                 }
             }
 
+            private IReplyMarkup GetInlineButtons(string id)
+            {
+                return new InlineKeyboardMarkup(new InlineKeyboardButton(id)
+                    { Text = "Добавить", CallbackData = id.ToString() });
+            }
+
             private IReplyMarkup GetButtons()
             {
                 return new ReplyKeyboardMarkup(token) //Передаём в клавиатуру токен нашего бота
                 {
-                Keyboard = new List<IEnumerable<KeyboardButton>>
+                Keyboard = new List<List<KeyboardButton>>
                     {
                         new List<KeyboardButton> //Первая строка кнопок
                         {
-                            new KeyboardButton(FirstButton),
-                            new KeyboardButton(SecondButton)
+                            new KeyboardButton(GetImgButton),
+                            new KeyboardButton(AddHomeworkButton)
                         },
-                        new List<KeyboardButton> //Вторая строка кнопок
-                        {
-                            new KeyboardButton(ThirdButton),
-                            new KeyboardButton(FourthButton)
-                        }
-                    }
+                    },
+                ResizeKeyboard = true
                 };
             }
         }
