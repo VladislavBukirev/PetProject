@@ -2,7 +2,7 @@ namespace TelegramBotExperiments;
 
 public class Images
 {
-    public static Dictionary<int, string> imageDictionary = new()
+    private static Dictionary<int, string> imageDictionary = new()
     {
         { 0, "file_122593456.png" },
         {1, "file_122593463.png"},

@@ -26,12 +26,12 @@ namespace TelegramBotExperiments
         {
             private string token;
             private Telegram.Bot.TelegramBotClient bot;
-            private Dictionary<long, UserState> clientStates = new Dictionary<long, UserState>();
 
             const string GetImgButton = "Хочу картинку";
             const string AddHomeworkButton = "Добавить домашнее задание";
-            const string MusicButton = "Music";
-            const string Back = "Back";
+            const string HomeworkStatusButton = "Узнать состояние домашнего задания";
+            //Словарь содержит группу и другой словарь, содержащий дату и домашние задания, заданные на эту дату
+            private Dictionary<string, Dictionary<string, List<string>>> HomeworkDict = new Dictionary<string, Dictionary<string, List<string>>>();
 
             public TelegramBotHelper(string token)
             {
@@ -73,74 +73,46 @@ namespace TelegramBotExperiments
                     case Telegram.Bot.Types.Enums.UpdateType.Message:
                     {
                         var text = update.Message.Text;
-                        string image = null;
-                        var state = clientStates.ContainsKey(update.Message.Chat.Id)
-                            ? clientStates[update.Message.Chat.Id] : null;
-                        if (state != null)
                         {
-                            switch (state.State)
-                            {
-                                case State.SearchMusic:
-                                    List<string> songs = GetSongsByAuthor(author: text);
-                                    if (songs != null && songs.Count > 0)
-                                    {
-                                        state.State = State.SearchSong;
-                                        state.Author = text;
-                                        bot.SendTextMessageAsync(update.Message.Chat.Id, "Введите название песни: ",
-                                            replyMarkup: GetSongsButton(songs));
-                                    }
-                                    else
-                                    {
-                                        bot.SendTextMessageAsync(update.Message.Chat.Id, "Ничего не найдено. Введите автора",
-                                            replyMarkup: GetAutors());
-                                    }
-                                    break;
-                                case State.SearchSong:
-                                    var songPath = GetSongPath(text);
-                                    if (!string.IsNullOrEmpty(songPath))
-                                    {
-                                        List<string> songs2 = GetSongsByAuthor(author: state.Author);
-                                        using (var stream = System.IO.File.OpenRead(songPath)) //открыть картинку
-                                        {
-                                            var r = bot.SendAudioAsync(update.Message.Chat.Id, new Telegram.Bot.Types.InputFiles.InputOnlineFile(stream), replyMarkup: GetSongsButton(songs2)).Result;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        List<string> songs2 = GetSongsByAuthor(author: state.Author);
-                                        bot.SendTextMessageAsync(update.Message.Chat.Id, "Ничего не найдено. Введите название песни: ",
-                                            replyMarkup: GetSongsButton(songs2));
-                                    }
-                                    break;
-                            }
-                        }
-                        else
-                        {
+                            string image;
                             switch (text)
                             {
-                                case MusicButton: //При нажатии кнопки music создаём для клиента объект (состояние его чата)
-                                    clientStates[update.Message.Chat.Id] = new UserState { State = State.SearchMusic };
-                                    bot.SendTextMessageAsync(update.Message.Chat.Id, "Введите автора",
-                                        replyMarkup: GetAutors());
-                                    break;
-
                                 case GetImgButton:
                                     var rnd = new Random();
                                     image = Path.Combine(Environment.CurrentDirectory, Images.GetImage(rnd.Next(3))); //достать картинку
                                     using (var stream = System.IO.File.OpenRead(image)) //открыть картинку
                                     {
-                                        var r = bot.SendPhotoAsync(update.Message.Chat.Id, new Telegram.Bot.Types.InputFiles.InputOnlineFile(stream), replyMarkup: GetButtons()).Result;
+                                        var r = bot.SendPhotoAsync(update.Message.Chat.Id, new Telegram.Bot.Types.InputFiles.InputOnlineFile(stream), replyMarkup: GetMainMenuButtons()).Result;
                                     }
                                     break;
                                 case AddHomeworkButton:
                                     image = Path.Combine(Environment.CurrentDirectory, "101.png"); //достать картинку
+                                    bot.SendTextMessageAsync(update.Message.Chat.Id, "Выберите вашу группу", replyMarkup: GetGroupButtons());
+                                    var day = DateTime.Today;
+                                    var list = new List<string>();
+                                    var a = text;
+                                    list.Add(a);
+                                    var dict = new Dictionary<string, List<string>>();
+                                    dict.Add(day.ToString(), list);
+                                    HomeworkDict.Add("ФТ-103-2", dict);
                                     using (var stream = System.IO.File.OpenRead(image)) //открыть картинку
                                     {
                                         var r = bot.SendPhotoAsync(update.Message.Chat.Id, new Telegram.Bot.Types.InputFiles.InputOnlineFile(stream), replyMarkup: GetInlineButtons("1")).Result;
                                     }
                                     break;
+                                case HomeworkStatusButton:
+                                    var dayy = DateTime.Today;
+                                    bot.SendTextMessageAsync(update.Message.Chat.Id, HomeworkDict["ФТ-103-2"][dayy.ToString()][0],
+                                        replyMarkup: GetGroupButtons());
+                                    break;
+                                // case "ФТ-103-1":
+                                //     bot.SendTextMessageAsync(update.Message.Chat.Id, "Вы учитесь в ФТ-103-1");
+                                //     break;
+                                // case "ФТ-103-2":
+                                //     bot.SendTextMessageAsync(update.Message.Chat.Id, "Вы учитесь в ФТ-103-2");
+                                //     break;
                                 default:
-                                    bot.SendTextMessageAsync(update.Message.Chat.Id, "Recieved text: " + text, replyMarkup: GetButtons());
+                                    bot.SendTextMessageAsync(update.Message.Chat.Id, "Recieved text: " + text, replyMarkup: GetMainMenuButtons());
                                     break;
                             }
                         }
@@ -150,7 +122,7 @@ namespace TelegramBotExperiments
                         switch (update.CallbackQuery.Data)
                         {
                             case "1":
-                                var msg = bot.SendTextMessageAsync(update.CallbackQuery.Message.Chat.Id, "Загружай", replyMarkup: GetButtons()).Result;
+                                var msg = bot.SendTextMessageAsync(update.CallbackQuery.Message.Chat.Id, "Загружай", replyMarkup: GetMainMenuButtons()).Result;
                                 break;
                         }
                         break;
@@ -159,56 +131,37 @@ namespace TelegramBotExperiments
                         break;
                 }
             }
-
-            private string GetSongPath(string text)
-            {
-                if (text.Equals("Биба"))
-                {
-                    return Path.Combine(Environment.CurrentDirectory, "povezlo-povezlo.mp3");
-                }
-                else
-                    return null;
-            }
-
-            private IReplyMarkup GetSongsButton(List<string> songs)
-            {
-                var Keyboard = new List<List<KeyboardButton>>();
-                songs.ForEach(s => Keyboard.Add(new List<KeyboardButton>(){new KeyboardButton(s)}));
-                return new ReplyKeyboardMarkup(token)
-                {
-                    Keyboard = Keyboard,
-                    ResizeKeyboard = true
-                };
-            }
-
-            private List<string> GetSongsByAuthor(string? author)
-            {
-                if (author.Equals("Biba"))
-                    return new List<string>() {"povezlo-povezlo"};
-                return null;
-            }
-
-            private IReplyMarkup GetAutors()
+            private IReplyMarkup GetGroupButtons()
             {
                 return new ReplyKeyboardMarkup(token) //Передаём в клавиатуру токен нашего бота
                 {
                     Keyboard = new List<List<KeyboardButton>>
                     {
-                        new List<KeyboardButton> //Первая строка кнопок
+                        new List<KeyboardButton> 
                         {
-                            new KeyboardButton("Биба"),
-                            new KeyboardButton("Боба")
+                            new KeyboardButton("ФТ-101-1"),
+                            new KeyboardButton("ФТ-101-2")
+                        },
+                        new List<KeyboardButton> 
+                        {
+                            new KeyboardButton("ФТ-102-1"),
+                            new KeyboardButton("ФТ-102-2")
+                        },
+                        new List<KeyboardButton> 
+                        {
+                            new KeyboardButton("ФТ-103-1"),
+                            new KeyboardButton("ФТ-103-2")
+                        },
+                        new List<KeyboardButton> 
+                        {
+                            new KeyboardButton("ФТ-104-1"),
+                            new KeyboardButton("ФТ-104-2")
                         },
                     },
                     ResizeKeyboard = true
                 };
             }
-
-            private class UserState
-            {
-                public State State { get; set; }
-                public string? Author { get; set; }
-            }
+            
 
             private IReplyMarkup GetInlineButtons(string id)
             {
@@ -216,7 +169,7 @@ namespace TelegramBotExperiments
                     { Text = "Добавить", CallbackData = id.ToString() });
             }
 
-            private IReplyMarkup GetButtons()
+            private IReplyMarkup GetMainMenuButtons()
             {
                 return new ReplyKeyboardMarkup(token) //Передаём в клавиатуру токен нашего бота
                 {
@@ -229,18 +182,12 @@ namespace TelegramBotExperiments
                         },
                         new List<KeyboardButton> //Вторая строка кнопок
                         {
-                            new KeyboardButton(MusicButton),
+                            new KeyboardButton(HomeworkStatusButton),
                         },
                     },
                 ResizeKeyboard = true
                 };
             }
         }
-    }
-
-    internal enum State
-    {
-        SearchSong,
-        SearchMusic
     }
 }
