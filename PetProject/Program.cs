@@ -30,8 +30,9 @@ namespace TelegramBotExperiments
             const string GetImgButton = "Хочу картинку";
             const string AddHomeworkButton = "Добавить домашнее задание";
             const string HomeworkStatusButton = "Узнать состояние домашнего задания";
-            private const string TEXT_BACK = "Назад";
-            private const string TEXT_BACK2 = "Назад в меню добавления дз";
+            private const string AddHomeworkInGroupButton = "Добавить домашнее задание для моей группы";
+            private const string TEXT_BACK = "Откат из меню групп в MainMenu";
+            private const string TEXT_BACK2 = "Откат из графы добавления домашнего задания в выбор групп";
             private Dictionary<long, UserState> _clientStates = new Dictionary<long, UserState>();
             //Словарь содержит группу и другой словарь, содержащий дату и домашние задания, заданные на эту дату
             private Dictionary<string, Dictionary<string, List<string>>> HomeworkDict = new Dictionary<string, Dictionary<string, List<string>>>();
@@ -85,21 +86,19 @@ namespace TelegramBotExperiments
                                 case State.AddHomework :
                                     if (text.Equals(TEXT_BACK))
                                     {
-                                        bot.SendTextMessageAsync(update.Message.Chat.Id, "Выберите:", replyMarkup: GetMainMenuButtons());
+                                        bot.SendTextMessageAsync(update.Message.Chat.Id, "Откат из меню групп в MainMenu", replyMarkup: GetMainMenuButtons());
                                         _clientStates[update.Message.Chat.Id] = null;
+                                        break;
+                                    }
+                                    if (text.Equals(TEXT_BACK2))
+                                    {
+                                        bot.SendTextMessageAsync(update.Message.Chat.Id, "Откат из графы добавления домашнего задания в выбор групп", replyMarkup: GetGroupButtons());
+                                        _clientStates[update.Message.Chat.Id] = new UserState
+                                            { State = State.AddHomework };
                                     }
                                     else
                                     {
-                                        bot.SendTextMessageAsync(update.Message.Chat.Id, "Добавляй, шо ждёшь?", replyMarkup: GetAddHomeworkButton());
-                                        switch (text)
-                                        {
-                                            case TEXT_BACK2:
-                                                _clientStates[update.Message.Chat.Id] = new UserState
-                                                    { State = State.AddHomework };
-                                                bot.SendTextMessageAsync(update.Message.Chat.Id, "Очень жаль:", replyMarkup: GetGroupButtons());
-                                                _clientStates[update.Message.Chat.Id] = null;
-                                                break;
-                                        }
+                                        bot.SendTextMessageAsync(update.Message.Chat.Id, "Функция добавления домашнего задания", replyMarkup: GetAddHomeworkButton());
                                     }
                                     break;
                                 case State.StatusHomework :
@@ -142,18 +141,17 @@ namespace TelegramBotExperiments
                                         _clientStates[update.Message.Chat.Id] = new UserState
                                             { State = State.AddHomework };
                                         bot.SendTextMessageAsync(update.Message.Chat.Id,
-                                            "HomeworkDict[\"ФТ-103-2\"][dayy.ToString()][0]",
+                                            "Переход в иконку добавления домашнего задания",
                                             replyMarkup: GetGroupButtons());
 
                                         break;
                                     case HomeworkStatusButton:
-                                        var dayy = DateTime.Today;
                                         bot.SendTextMessageAsync(update.Message.Chat.Id,
-                                            "HomeworkDict[\"ФТ-103-2\"][dayy.ToString()][0]",
+                                            "Переход в иконку получения домашнего задания",
                                             replyMarkup: GetGroupButtons());
                                         break;
                                     default:
-                                        bot.SendTextMessageAsync(update.Message.Chat.Id, "Recieved text: " + text,
+                                        bot.SendTextMessageAsync(update.Message.Chat.Id, "Дефолтный случай свичкейса " + text,
                                             replyMarkup: GetMainMenuButtons());
                                         break;
                                 }
@@ -219,7 +217,7 @@ namespace TelegramBotExperiments
                     {
                         new List<KeyboardButton>()
                         {
-                            new KeyboardButton("Добавить домашнее задание"),
+                            new KeyboardButton(AddHomeworkInGroupButton),
                             new KeyboardButton(TEXT_BACK2)
                         }
                     },
@@ -265,6 +263,7 @@ namespace TelegramBotExperiments
     {
         None,
         AddHomework,
-        StatusHomework
+        StatusHomework,
+        Reroll
     }
 }
