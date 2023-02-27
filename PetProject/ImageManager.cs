@@ -5,7 +5,8 @@ namespace TelegramBotExperiments;
 
 public class ImageManager
 {
-    static string[] files = Directory.GetFiles(@"C:\Users\79521\Desktop\git-actually\helloapp-black\PetProject\PetProject\fiitsosatb_png\fiitsosatb\png", "*.png", SearchOption.AllDirectories);
+    static string[] files = Directory.GetFiles($@"{Directory.GetCurrentDirectory().Split("PetProject")[0]}\PetProject\fiitsosatb_png\fiitsosatb\png",
+        "*.png", SearchOption.AllDirectories);
 
     public static string GetImage(int number)
     {
