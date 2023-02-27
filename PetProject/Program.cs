@@ -1,7 +1,4 @@
-﻿using System.Transactions;
-using Telegram.Bot;
-using Telegram.Bot.Types.ReplyMarkups;
-
+﻿using Telegram.Bot;
 
 namespace TelegramBotExperiments
 {
@@ -9,10 +6,8 @@ namespace TelegramBotExperiments
     {
         private static string GetToken()
         {
-            string token;
             using var reader = new StreamReader("token.txt");
-            token = reader.ReadLine();
-            return token;
+            return reader.ReadLine();
         }
         static void Main(string[] args)
         {
@@ -45,15 +40,15 @@ namespace TelegramBotExperiments
             {
                 bot = new TelegramBotClient(token);
                 var me = bot.GetMeAsync().Result;
-                if (me != null && !string.IsNullOrEmpty(me.Username))
+                if (!string.IsNullOrEmpty(me.Username))
                 {
-                    int offset = 0;
+                    var offset = 0;
                     while (true)
                     {
                         try
                         {
                             var updates = bot.GetUpdatesAsync(offset).Result; //Регистрируем изменение
-                            if (updates != null && updates.Length > 0)
+                            if (updates.Length > 0)
                             {
                                 foreach (var update in updates)
                                 {
