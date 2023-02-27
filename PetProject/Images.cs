@@ -1,19 +1,14 @@
+using Telegram.Bots.Requests;
+using System.IO;
+
 namespace TelegramBotExperiments;
 
-public class Images
+public class ImageManager
 {
-    private static Dictionary<int, string> imageDictionary = new();
-    private static void FillDictionary()
-    {
-        for(var i = 0; i < 100; i++)
-        {
-            imageDictionary[i] = $"file_122593{456 + i}.png";
-        }
-    }
+    static string[] files = Directory.GetFiles(@"C:\Users\79521\Desktop\git-actually\helloapp-black\PetProject\PetProject\fiitsosatb_png\fiitsosatb\png", "*.png", SearchOption.AllDirectories);
 
     public static string GetImage(int number)
     {
-        FillDictionary();
-        return imageDictionary[number];
+        return files[number];
     }
 }

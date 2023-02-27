@@ -2,7 +2,7 @@ using Telegram.Bot.Types.ReplyMarkups;
 
 namespace TelegramBotExperiments;
 
-public class Buttons
+public class ButtonManager
 {
     private static string token;
     
