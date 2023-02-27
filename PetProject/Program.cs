@@ -1,12 +1,6 @@
-﻿using System.Data;
-using System.Net.Mime;
-using System.IO;
-using Telegram.Bot;
-using Telegram.Bot.Requests;
-using Telegram.Bot.Types;
+﻿using Telegram.Bot;
 using Telegram.Bot.Types.ReplyMarkups;
-using static TelegramBotExperiments.Images;
-using File = Telegram.Bot.Types.File;
+
 
 namespace TelegramBotExperiments
 {
@@ -19,7 +13,10 @@ namespace TelegramBotExperiments
                 TelegramBotHelper hlp = new TelegramBotHelper(token: "6271910487:AAH2yNNXNTPtVr5azFv_HcGl6haBZuAiuws");
                 hlp.GetUpdates();
             }
-            catch (Exception e) {Console.WriteLine(e);}
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
         }
 
         private class TelegramBotHelper
@@ -27,17 +24,6 @@ namespace TelegramBotExperiments
             private string token;
             private Telegram.Bot.TelegramBotClient bot;
 
-            const string GetImgButton = "Хочу картинку";
-            
-            const string AddHomeworkButton = "Добавить домашнее задание";
-            const string HomeworkStatusButton = "Узнать состояние домашнего задания";
-            
-            private const string AddHomeworkInGroupButton = "Добавить домашнее задание для моей группы";
-            private const string GetHomeworkInGroupButton = "Узнать домашнее задание для моей группы";
-            
-            private const string TEXT_BACK = "Откат из меню групп в MainMenu";
-            private const string TEXT_BACK2 = "Откат из графы добавления домашнего задания в выбор групп";
-            
             private Dictionary<long, UserState> _clientStates = new Dictionary<long, UserState>();
 
             public TelegramBotHelper(string token)
@@ -52,7 +38,7 @@ namespace TelegramBotExperiments
                 if (me != null && !string.IsNullOrEmpty(me.Username))
                 {
                     int offset = 0;
-                    while (true) 
+                    while (true)
                     {
                         try
                         {
@@ -66,8 +52,11 @@ namespace TelegramBotExperiments
                                 }
                             }
                         }
-                        catch (Exception e) {Console.WriteLine(e);}
-                        
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(e);
+                        }
+
                         Thread.Sleep(1000);
                     }
                 }
@@ -80,47 +69,62 @@ namespace TelegramBotExperiments
                     case Telegram.Bot.Types.Enums.UpdateType.Message:
                     {
                         var text = update.Message.Text;
-                        
-                        var state = _clientStates.ContainsKey(update.Message.Chat.Id) ? _clientStates[update.Message.Chat.Id] : null;
+
+                        var state = _clientStates.ContainsKey(update.Message.Chat.Id)
+                            ? _clientStates[update.Message.Chat.Id]
+                            : null;
                         if (state != null)
                         {
                             switch (state.State)
                             {
-                                case State.AddHomework :
-                                    if (text.Equals(TEXT_BACK))
+                                case State.AddHomework:
+                                    if (text.Equals(Buttons.TEXT_BACK))
                                     {
-                                        bot.SendTextMessageAsync(update.Message.Chat.Id, "Откат из меню групп в MainMenu", replyMarkup: GetMainMenuButtons());
+                                        bot.SendTextMessageAsync(update.Message.Chat.Id,
+                                            "Откат из меню групп в MainMenu", replyMarkup: GetMainMenuButtons());
                                         _clientStates[update.Message.Chat.Id] = null;
                                         break;
                                     }
-                                    if (text.Equals(TEXT_BACK2))
+
+                                    if (text.Equals(Buttons.TEXT_BACK2))
                                     {
-                                        bot.SendTextMessageAsync(update.Message.Chat.Id, "Откат из графы добавления домашнего задания в выбор групп", replyMarkup: GetGroupButtons());
+                                        bot.SendTextMessageAsync(update.Message.Chat.Id,
+                                            "Откат из графы добавления домашнего задания в выбор групп",
+                                            replyMarkup: GetGroupButtons());
                                         _clientStates[update.Message.Chat.Id] = new UserState
                                             { State = State.AddHomework };
                                     }
                                     else
                                     {
-                                        bot.SendTextMessageAsync(update.Message.Chat.Id, "Функция добавления домашнего задания", replyMarkup: GetAddHomeworkButton());
+                                        bot.SendTextMessageAsync(update.Message.Chat.Id,
+                                            "Функция добавления домашнего задания",
+                                            replyMarkup: GetAddHomeworkButton());
                                     }
+
                                     break;
-                                case State.StatusHomework :
-                                    if (text.Equals(TEXT_BACK))
+                                case State.StatusHomework:
+                                    if (text.Equals(Buttons.TEXT_BACK))
                                     {
-                                        bot.SendTextMessageAsync(update.Message.Chat.Id, "Откат из меню групп в MainMenu", replyMarkup: GetMainMenuButtons());
+                                        bot.SendTextMessageAsync(update.Message.Chat.Id,
+                                            "Откат из меню групп в MainMenu", replyMarkup: GetMainMenuButtons());
                                         _clientStates[update.Message.Chat.Id] = null;
                                         break;
                                     }
-                                    if (text.Equals(TEXT_BACK2))
+
+                                    if (text.Equals(Buttons.TEXT_BACK2))
                                     {
-                                        bot.SendTextMessageAsync(update.Message.Chat.Id, "Откат из графы добавления домашнего задания в выбор групп", replyMarkup: GetGroupButtons());
+                                        bot.SendTextMessageAsync(update.Message.Chat.Id,
+                                            "Откат из графы добавления домашнего задания в выбор групп",
+                                            replyMarkup: GetGroupButtons());
                                         _clientStates[update.Message.Chat.Id] = new UserState
                                             { State = State.StatusHomework };
                                     }
                                     else
                                     {
-                                        bot.SendTextMessageAsync(update.Message.Chat.Id, "Функция получения домашнего задания", replyMarkup: GetHomeworkButton());
+                                        bot.SendTextMessageAsync(update.Message.Chat.Id,
+                                            "Функция получения домашнего задания", replyMarkup: GetHomeworkButton());
                                     }
+
                                     break;
                             }
                         }
@@ -134,7 +138,7 @@ namespace TelegramBotExperiments
                                     //     bot.SendTextMessageAsync(update.Message.Chat.Id, "Пиздуй", replyMarkup: GetMainMenuButtons());
                                     //     _clientStates[update.Message.Chat.Id] = null;
                                     //     break;
-                                    case GetImgButton:
+                                    case Buttons.GetImgButton:
                                         var rnd = new Random();
                                         image = Path.Combine(Environment.CurrentDirectory,
                                             Images.GetImage(rnd.Next(3))); //достать картинку
@@ -144,26 +148,28 @@ namespace TelegramBotExperiments
                                                 new Telegram.Bot.Types.InputFiles.InputOnlineFile(stream),
                                                 replyMarkup: GetMainMenuButtons()).Result;
                                         }
+
                                         break;
-                                    
-                                    case AddHomeworkButton:
+
+                                    case Buttons.AddHomeworkButton:
                                         _clientStates[update.Message.Chat.Id] = new UserState
                                             { State = State.AddHomework };
                                         bot.SendTextMessageAsync(update.Message.Chat.Id,
                                             "Переход в иконку добавления домашнего задания",
                                             replyMarkup: GetGroupButtons());
                                         break;
-                                    
-                                    case HomeworkStatusButton:
+
+                                    case Buttons.HomeworkStatusButton:
                                         _clientStates[update.Message.Chat.Id] = new UserState
                                             { State = State.StatusHomework };
                                         bot.SendTextMessageAsync(update.Message.Chat.Id,
                                             "Переход в иконку получения домашнего задания",
                                             replyMarkup: GetGroupButtons());
                                         break;
-                                    
+
                                     default:
-                                        bot.SendTextMessageAsync(update.Message.Chat.Id, "Дефолтный случай свичкейса " + text,
+                                        bot.SendTextMessageAsync(update.Message.Chat.Id,
+                                            "Дефолтный случай свичкейса " + text,
                                             replyMarkup: GetMainMenuButtons());
                                         break;
                                 }
@@ -172,125 +178,40 @@ namespace TelegramBotExperiments
 
                         break;
                     }
-                    // case Telegram.Bot.Types.Enums.UpdateType.CallbackQuery:
-                    //     switch (update.CallbackQuery.Data)
-                    //     {
-                    //         case "1":
-                    //             var msg = bot.SendTextMessageAsync(update.CallbackQuery.Message.Chat.Id, "Загружай", replyMarkup: GetMainMenuButtons()).Result;
-                    //             break;
-                    //     }
-                    //     break;
-                    // default:
-                    //     Console.WriteLine(update.Type + "Not Implemented");
-                    //     break;
                 }
             }
-            
+
             private IReplyMarkup GetGroupButtons()
             {
-                return new ReplyKeyboardMarkup(token) //Передаём в клавиатуру токен нашего бота
-                {
-                    Keyboard = new List<List<KeyboardButton>>
-                    {
-                        new List<KeyboardButton>()
-                        {
-                            new KeyboardButton(TEXT_BACK)
-                        },
-                        new List<KeyboardButton> 
-                        {
-                            new KeyboardButton("ФТ-101-1"),
-                            new KeyboardButton("ФТ-101-2")
-                        },
-                        new List<KeyboardButton> 
-                        {
-                            new KeyboardButton("ФТ-102-1"),
-                            new KeyboardButton("ФТ-102-2")
-                        },
-                        new List<KeyboardButton> 
-                        {
-                            new KeyboardButton("ФТ-103-1"),
-                            new KeyboardButton("ФТ-103-2")
-                        },
-                        new List<KeyboardButton> 
-                        {
-                            new KeyboardButton("ФТ-104-1"),
-                            new KeyboardButton("ФТ-104-2")
-                        },
-                    },
-                    ResizeKeyboard = true
-                };
+                return Buttons.GetGroupButtons();
             }
 
             private IReplyMarkup GetAddHomeworkButton()
             {
-                return new ReplyKeyboardMarkup(token)
-                {
-                    Keyboard = new List<List<KeyboardButton>>()
-                    {
-                        new List<KeyboardButton>()
-                        {
-                            new KeyboardButton(AddHomeworkInGroupButton),
-                            new KeyboardButton(TEXT_BACK2)
-                        }
-                    },
-                    ResizeKeyboard = true
-                };
+                return Buttons.GetAddHomeworkButton();
             }
-            
+
             private IReplyMarkup GetHomeworkButton()
             {
-                return new ReplyKeyboardMarkup(token)
-                {
-                    Keyboard = new List<List<KeyboardButton>>()
-                    {
-                        new List<KeyboardButton>()
-                        {
-                            new KeyboardButton(GetHomeworkInGroupButton),
-                            new KeyboardButton(TEXT_BACK2)
-                        }
-                    },
-                    ResizeKeyboard = true
-                };
+                return Buttons.GetAddHomeworkButton();
             }
-            
-
-            // private IReplyMarkup GetInlineButtons(string id)
-            // {
-            //     return new InlineKeyboardMarkup(new InlineKeyboardButton(id)
-            //         { Text = "Добавить", CallbackData = id.ToString() });
-            // }
 
             private IReplyMarkup GetMainMenuButtons()
             {
-                return new ReplyKeyboardMarkup(token) //Передаём в клавиатуру токен нашего бота
-                {
-                Keyboard = new List<List<KeyboardButton>>
-                    {
-                        new List<KeyboardButton> //Первая строка кнопок
-                        {
-                            new KeyboardButton(GetImgButton),
-                        },
-                        new List<KeyboardButton> //Вторая строка кнопок
-                        {
-                            new KeyboardButton(AddHomeworkButton),
-                            new KeyboardButton(HomeworkStatusButton),
-                        },
-                    },
-                ResizeKeyboard = true
-                };
+                return Buttons.GetMainMenuButtons();
             }
         }
-    }
 
-    public class UserState
-    {
-        public State State { get; set; }
-    }
+        private class UserState
+        {
+            public State State { get; set; }
+        }
 
-    public enum State
-    {
-        None,
-        AddHomework,
-        StatusHomework,
+        public enum State
+        {
+            None,
+            AddHomework,
+            StatusHomework,
+        }
     }
 }
