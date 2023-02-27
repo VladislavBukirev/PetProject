@@ -19,6 +19,7 @@ namespace TelegramBotExperiments
             }
         }
 
+        // Вынеси в отдельный файл все классы. Helper - не самое удачное название, Helper'ы - это чаще всего статические классы и они выполняют одну или несколько небольших функций
         private class TelegramBotHelper
         {
             private string token;
@@ -35,6 +36,7 @@ namespace TelegramBotExperiments
             {
                 bot = new TelegramBotClient(token);
                 var me = bot.GetMeAsync().Result;
+                // Тут можно не проверять на null
                 if (me != null && !string.IsNullOrEmpty(me.Username))
                 {
                     int offset = 0;
@@ -173,6 +175,7 @@ namespace TelegramBotExperiments
                 }
             }
 
+            // Как будто эти методы тут не нужны
             private IReplyMarkup GetGroupButtons()
             {
                 return Buttons.GetGroupButtons();

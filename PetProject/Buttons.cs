@@ -2,10 +2,13 @@ using Telegram.Bot.Types.ReplyMarkups;
 
 namespace TelegramBotExperiments;
 
+// Напиши названия классов более явно. ButtonManager какой-нибудь
 public class Buttons
 {
+    // Не нужно здесь хранить токен
     private static string token = "6271910487:AAH2yNNXNTPtVr5azFv_HcGl6haBZuAiuws";
     
+    // Строки лучше сразу выносить в файлы локализации https://learn.microsoft.com/en-us/dotnet/core/extensions/localization
     public const string GetImgButton = "Хочу картинку";
             
     public const string AddHomeworkButton = "Добавить домашнее задание";
