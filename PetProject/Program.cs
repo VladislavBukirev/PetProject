@@ -134,7 +134,7 @@ namespace TelegramBotExperiments
                                     case Buttons.GetImgButton:
                                         var rnd = new Random();
                                         image = Path.Combine(Environment.CurrentDirectory,
-                                            Images.GetImage(rnd.Next(3))); //достать картинку
+                                            Images.GetImage(rnd.Next(100))); //достать картинку
                                         using (var stream = System.IO.File.OpenRead(image)) //открыть картинку
                                         {
                                             var r = bot.SendPhotoAsync(update.Message.Chat.Id,
