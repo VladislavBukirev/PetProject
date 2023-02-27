@@ -4,15 +4,15 @@ namespace TelegramBotExperiments;
 
 public class Buttons
 {
-    private static string token = "6271910487:AAH2yNNXNTPtVr5azFv_HcGl6haBZuAiuws";
+    private static string token;
     
     public const string GetImgButton = "Хочу картинку";
             
     public const string AddHomeworkButton = "Добавить домашнее задание";
     public const string HomeworkStatusButton = "Узнать состояние домашнего задания";
             
-    private const string AddHomeworkInGroupButton = "Добавить домашнее задание для моей группы";
-    private const string GetHomeworkInGroupButton = "Узнать домашнее задание для моей группы";
+    public const string AddHomeworkInGroupButton = "Добавить домашнее задание для моей группы";
+    public const string GetHomeworkInGroupButton = "Узнать домашнее задание для моей группы";
             
     public const string TEXT_BACK = "Откат из меню групп в MainMenu";
     public const string TEXT_BACK2 = "Откат из графы добавления домашнего задания в выбор групп";

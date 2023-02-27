@@ -1,4 +1,5 @@
-﻿using Telegram.Bot;
+﻿using System.Transactions;
+using Telegram.Bot;
 using Telegram.Bot.Types.ReplyMarkups;
 
 
@@ -6,11 +7,20 @@ namespace TelegramBotExperiments
 {
     class Program
     {
+        private static string GetToken()
+        {
+            string token;
+            using var reader = new StreamReader("token.txt");
+            token = reader.ReadLine();
+            return token;
+        }
         static void Main(string[] args)
         {
+            var token = GetToken();
+            
             try
             {
-                TelegramBotHelper hlp = new TelegramBotHelper(token: "6271910487:AAH2yNNXNTPtVr5azFv_HcGl6haBZuAiuws");
+                TelegramBotHelper hlp = new TelegramBotHelper(token: token);
                 hlp.GetUpdates();
             }
             catch (Exception e)
@@ -21,7 +31,7 @@ namespace TelegramBotExperiments
 
         private class TelegramBotHelper
         {
-            private string token;
+            private string token = GetToken();
             private Telegram.Bot.TelegramBotClient bot;
 
             private Dictionary<long, UserState> _clientStates = new Dictionary<long, UserState>();
