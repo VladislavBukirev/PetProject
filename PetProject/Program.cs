@@ -69,7 +69,6 @@ namespace TelegramBotExperiments
                     case Telegram.Bot.Types.Enums.UpdateType.Message:
                     {
                         var text = update.Message.Text;
-
                         var state = _clientStates.ContainsKey(update.Message.Chat.Id)
                             ? _clientStates[update.Message.Chat.Id]
                             : null;
@@ -85,7 +84,6 @@ namespace TelegramBotExperiments
                                         _clientStates[update.Message.Chat.Id] = null;
                                         break;
                                     }
-
                                     if (text.Equals(Buttons.TEXT_BACK2))
                                     {
                                         bot.SendTextMessageAsync(update.Message.Chat.Id,
@@ -100,8 +98,8 @@ namespace TelegramBotExperiments
                                             "Функция добавления домашнего задания",
                                             replyMarkup: GetAddHomeworkButton());
                                     }
-
                                     break;
+                                
                                 case State.StatusHomework:
                                     if (text.Equals(Buttons.TEXT_BACK))
                                     {
@@ -110,7 +108,6 @@ namespace TelegramBotExperiments
                                         _clientStates[update.Message.Chat.Id] = null;
                                         break;
                                     }
-
                                     if (text.Equals(Buttons.TEXT_BACK2))
                                     {
                                         bot.SendTextMessageAsync(update.Message.Chat.Id,
@@ -134,10 +131,6 @@ namespace TelegramBotExperiments
                                 string image;
                                 switch (text)
                                 {
-                                    // case TEXT_BACK:
-                                    //     bot.SendTextMessageAsync(update.Message.Chat.Id, "Пиздуй", replyMarkup: GetMainMenuButtons());
-                                    //     _clientStates[update.Message.Chat.Id] = null;
-                                    //     break;
                                     case Buttons.GetImgButton:
                                         var rnd = new Random();
                                         image = Path.Combine(Environment.CurrentDirectory,
@@ -148,9 +141,8 @@ namespace TelegramBotExperiments
                                                 new Telegram.Bot.Types.InputFiles.InputOnlineFile(stream),
                                                 replyMarkup: GetMainMenuButtons()).Result;
                                         }
-
                                         break;
-
+                                    
                                     case Buttons.AddHomeworkButton:
                                         _clientStates[update.Message.Chat.Id] = new UserState
                                             { State = State.AddHomework };
